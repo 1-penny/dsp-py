@@ -6,7 +6,8 @@
 
 import numpy as np
 import os
-
+import scipy.fftpack
+import matplotlib.pyplot as plt
 
 def read_data(filename, dtype, dim=1, count=-1, offset=0):
     ''' 读取数据.
@@ -30,12 +31,9 @@ def read_data(filename, dtype, dim=1, count=-1, offset=0):
         return None
 
 
-def plot_freq(data):
+def plot_freq(data, fs=1):
     ''' 绘制频谱.
     '''
-    import scipy.fftpack
-    import matplotlib.pyplot as plt
-
     if np.iscomplexobj(data):
         data_f = scipy.fft(data)
     else:
@@ -48,9 +46,16 @@ def plot_freq(data):
     plt.show()
 
 
+def plot_specgram(data, fs=1):
+    ''' 绘制瀑布图.
+    '''
+    plt.specgram(data, Fs=fs)    
+    plt.show()
+
 if __name__ == '__main__':
     filename = "c:/data/gpssim.bin"
-    data = read_data(filename, np.int16, count=1024*2)
+    data = read_data(filename, np.int16, count=1024*1024)
 
     if data is not None:
-        plot_freq(data)
+        # plot_freq(data)
+        plot_specgram(data)
